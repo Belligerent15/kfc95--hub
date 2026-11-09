@@ -1,0 +1,46 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Team {
+    id           String   @id @default(uuid())
+    name         String   @unique
+    groupName    String
+    played       Int      @default(0)
+    won          Int      @default(0)
+    drawn        Int      @default(0)
+    lost         Int      @default(0)
+    goalsFor     Int      @default(0)
+    goalsAgainst Int      @default(0)
+    points       Int      @default(0)
+    players      Player[]
+    homeMatches  Match[]  @relation("HomeTeam")
+    awayMatches  Match[]  @relation("AwayTeam")
+}
+
+model Player {
+    id       String @id @default(uuid())
+    name     String
+    position String
+    number   Int
+    teamId   String
+    team     Team   @relation(fields: [teamId], references: [id], onDelete: Cascade)
+}
+
+model Match {
+    id          String   @id @default(uuid())
+    homeTeamId  String
+    homeTeam    Team     @relation("HomeTeam", fields: [homeTeamId], references: [id])
+    awayTeamId  String
+    awayTeam    Team     @relation("AwayTeam", fields: [awayTeamId], references: [id])
+    homeScore   Int      @default(0)
+    awayScore   Int      @default(0)
+    status      String   @default("UPCOMING")
+    matchDate   String   @default("19-29 December 2026")
+    venue       String   @default("Manganeng Mampuru Sport Ground")
+}
