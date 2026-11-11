@@ -8,7 +8,7 @@ export async function GET() {
     const teams = await prisma.team.findMany({
       orderBy: [
         { points: 'desc' },
-        { goalsFor: { sort: 'desc' } }
+        { goalsFor: 'desc' }
       ],
       include: {
         players: true
