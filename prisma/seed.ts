@@ -3,110 +3,62 @@ import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 
 async function main() {
-  console.log('🌱 Seeding KFC95 Hub database with official tournament data...')
-
   await prisma.match.deleteMany()
   await prisma.player.deleteMany()
   await prisma.team.deleteMany()
 
-  const teamNames = [
-    { name: 'Stars of Mmabatho', group: 'Group A' },
-    { name: 'Makola FC', group: 'Group A' },
-    { name: 'Votex FC', group: 'Group B' },
-    { name: 'Maila United', group: 'Group B' },
-    { name: 'Kwena Academy', group: 'Group C' },
-    { name: 'Mochadi FC', group: 'Group C' },
-    { name: 'De Stars FC', group: 'Group D' },
-    { name: 'Mantwaleng Shakers', group: 'Group D' },
-    { name: 'Matsebeng Real Hearts', group: 'Group E' },
-    { name: 'PSG FC', group: 'Group E' },
-    { name: 'Malegale Circuit', group: 'Group F' },
-    { name: 'Gosebo FC', group: 'Group F' },
-    { name: 'The Joint FC', group: 'Group G' },
-    { name: 'Limpopo Express', group: 'Group G' },
-    { name: 'Manganeng Barcelona', group: 'Group H' },
-    { name: 'Ngwabe City Motors', group: 'Group H' },
-    { name: 'Real Eagles', group: 'Group I' },
-    { name: 'Team Galatasaray', group: 'Group I' },
-    { name: 'Platinum City', group: 'Group J' },
-    { name: 'Shaka United FC', group: 'Group J' },
-    { name: 'Mmotong SA', group: 'Group K' },
-    { name: 'Marizeburg FC', group: 'Group K' },
-    { name: 'Dikakapa FC', group: 'Group L' },
-    { name: 'Leopard FC', group: 'Group L' },
-    { name: 'Manyasa FC', group: 'Group M' },
-    { name: 'Future FC', group: 'Group M' },
-    { name: 'Moopong FC', group: 'Group N' },
-    { name: 'Super Strikes FC', group: 'Group N' },
-    { name: 'Mmakgari Stars', group: 'Group O' },
-    { name: 'Mabule All Blacks', group: 'Group O' },
-    { name: 'Manganeng Brazil', group: 'Group P' },
-    { name: 'Stars of Fetakgomo', group: 'Group P' }
+  const teamsData = [
+    { name: 'Stars of Mmabatho', groupName: 'Group A' },
+    { name: 'Makola FC', groupName: 'Group A' },
+    { name: 'Votex FC', groupName: 'Group B' },
+    { name: 'Maila United', groupName: 'Group B' },
+    { name: 'Kwena Academy', groupName: 'Group C' },
+    { name: 'Mochadi FC', groupName: 'Group C' },
+    { name: 'De Stars FC', groupName: 'Group D' },
+    { name: 'Mantwaleng Shakers', groupName: 'Group D' },
+    { name: 'Matsebeng Real Hearts', groupName: 'Group E' },
+    { name: 'PSG FC', groupName: 'Group E' },
+    { name: 'Malegale Circuit', groupName: 'Group F' },
+    { name: 'Gosebo FC', groupName: 'Group F' },
+    { name: 'The Joint FC', groupName: 'Group G' },
+    { name: 'Limpopo Express', groupName: 'Group G' },
+    { name: 'Manganeng Barcelona', groupName: 'Group H' },
+    { name: 'Ngwabe City Motors', groupName: 'Group H' },
+    { name: 'Real Eagles', groupName: 'Group I' },
+    { name: 'Team Galatasaray', groupName: 'Group I' },
+    { name: 'Platinum City', groupName: 'Group J' },
+    { name: 'Shaka United FC', groupName: 'Group J' },
+    { name: 'Mmotong SA', groupName: 'Group K' },
+    { name: 'Marizeburg FC', groupName: 'Group K' },
+    { name: 'Dikakapa FC', groupName: 'Group L' },
+    { name: 'Leopard FC', groupName: 'Group L' },
+    { name: 'Manyasa FC', groupName: 'Group M' },
+    { name: 'Future FC', groupName: 'Group M' },
+    { name: 'Moopong FC', groupName: 'Group N' },
+    { name: 'Super Strikes FC', groupName: 'Group N' },
+    { name: 'Mmakgari Stars', groupName: 'Group O' },
+    { name: 'Mabule All Blacks', groupName: 'Group O' },
+    { name: 'Manganeng Brazil', groupName: 'Group P' },
+    { name: 'Stars of Fetakgomo', groupName: 'Group P' },
   ]
 
-  const createdTeams: { [key: string]: string } = {}
-
-  for (const t of teamNames) {
-    const team = await prisma.team.create({
+  for (const t of teamsData) {
+    await prisma.team.create({
       data: {
         name: t.name,
-        groupName: t.group,
+        groupName: t.groupName,
         played: 0,
         won: 0,
         drawn: 0,
         lost: 0,
         goalsFor: 0,
         goalsAgainst: 0,
-        points: 0
-      }
-    })
-    createdTeams[t.name] = team.id
-
-    await prisma.player.createMany({
-      data: [
-        { name: `${t.name} Captain`, position: 'Midfielder', number: 10, teamId: team.id },
-        { name: `${t.name} Striker`, position: 'Forward', number: 9, teamId: team.id },
-        { name: `${t.name} Goalkeeper`, position: 'Goalkeeper', number: 1, teamId: team.id }
-      ]
+        points: 0,
+      },
     })
   }
 
-  const fixturePairs = [
-    ['Stars of Mmabatho', 'Makola FC'],
-    ['Votex FC', 'Maila United'],
-    ['Kwena Academy', 'Mochadi FC'],
-    ['De Stars FC', 'Mantwaleng Shakers'],
-    ['Matsebeng Real Hearts', 'PSG FC'],
-    ['Malegale Circuit', 'Gosebo FC'],
-    ['The Joint FC', 'Limpopo Express'],
-    ['Manganeng Barcelona', 'Ngwabe City Motors'],
-    ['Real Eagles', 'Team Galatasaray'],
-    ['Platinum City', 'Shaka United FC'],
-    ['Mmotong SA', 'Marizeburg FC'],
-    ['Dikakapa FC', 'Leopard FC'],
-    ['Manyasa FC', 'Future FC'],
-    ['Moopong FC', 'Super Strikes FC'],
-    ['Mmakgari Stars', 'Mabule All Blacks'],
-    ['Manganeng Brazil', 'Stars of Fetakgomo']
-  ]
-
-  for (const [home, away] of fixturePairs) {
-    if (createdTeams[home] && createdTeams[away]) {
-      await prisma.match.create({
-        data: {
-          homeTeamId: createdTeams[home],
-          awayTeamId: createdTeams[away],
-          homeScore: 0,
-          awayScore: 0,
-          status: 'UPCOMING',
-          matchDate: '19-29 December 2026',
-          venue: 'Manganeng Mampuru Sport Ground'
-        }
-      })
-    }
-  }
-
-  console.log('🚀 Seeding completed successfully!')
+  console.log('Seeded all 32 official tournament teams successfully!')
 }
 
 main()
