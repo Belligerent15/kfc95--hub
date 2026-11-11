@@ -1,8 +1,8 @@
 'use client'
 
 import React, { useState } from 'react'
-import StandingsTable from '@/components/StandingsTable'
-import MatchPredictor from '@/components/MatchPredictor'
+import StandingsTable from '../components/StandingsTable'
+import MatchPredictor from '../components/MatchPredictor'
 
 const ALL_16_TEAMS = [
   { name: 'Stars of Mmabatho', group: 'Group A', coach: 'Coach Seloga' },
@@ -76,7 +76,7 @@ export default function Home() {
       {/* Interactive Feature Cards Section */}
       <section className="max-w-6xl mx-auto px-6 py-8">
         <div className="grid md:grid-cols-3 gap-6">
-          {/* Card 1: 16 Teams (Clicks to open modal) */}
+          {/* Card 1: 16 Teams */}
           <button
             onClick={() => setShowTeamsModal(true)}
             className="text-left p-6 rounded-2xl bg-[#121212] border border-zinc-800 hover:border-[#c5a059]/60 transition group cursor-pointer shadow-xl"
@@ -90,7 +90,7 @@ export default function Home() {
             </p>
           </button>
 
-          {/* Card 2: Live Updates (Clicks to scroll to standings) */}
+          {/* Card 2: Live Updates */}
           <a
             href="#standings"
             className="text-left p-6 rounded-2xl bg-[#121212] border border-zinc-800 hover:border-[#c5a059]/60 transition group cursor-pointer shadow-xl block"
@@ -104,7 +104,7 @@ export default function Home() {
             </p>
           </a>
 
-          {/* Card 3: VIP Passes (Clicks to go to /tickets) */}
+          {/* Card 3: VIP Passes */}
           <a
             href="/tickets"
             className="text-left p-6 rounded-2xl bg-[#121212] border border-zinc-800 hover:border-[#c5a059]/60 transition group cursor-pointer shadow-xl block"
