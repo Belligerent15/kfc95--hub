@@ -1,18 +1,39 @@
-import React from 'react'
+'use client'
+
+import React, { useState, useEffect } from 'react'
 import StandingsTable from '@/components/StandingsTable'
 import MatchPredictor from '@/components/MatchPredictor'
 
+const ALL_16_TEAMS = [
+  { name: 'Stars of Mmabatho', group: 'Group A', coach: 'Coach Seloga' },
+  { name: 'Makola FC', group: 'Group A', coach: 'Coach Makola' },
+  { name: 'Votex FC', group: 'Group A', coach: 'Coach Votex' },
+  { name: 'Maila United', group: 'Group A', coach: 'Coach Maila' },
+  { name: 'Manganeng Brazil', group: 'Group B', coach: 'Coach Mampuru' },
+  { name: 'Manganeng Barcelona', group: 'Group B', coach: 'Coach Barca' },
+  { name: 'Kwena Academy', group: 'Group B', coach: 'Coach Kwena' },
+  { name: 'Mochadi FC', group: 'Group B', coach: 'Coach Mochadi' },
+  { name: 'Ngwabe City Motors', group: 'Group C', coach: 'Coach City' },
+  { name: 'De Stars FC', group: 'Group C', coach: 'Coach De Stars' },
+  { name: 'Platinum City', group: 'Group C', coach: 'Coach Platinum' },
+  { name: 'Phooko Swallows', group: 'Group C', coach: 'Coach Phooko' },
+  { name: 'Mapangene Lions', group: 'Group D', coach: 'Coach Lions' },
+  { name: 'Jane Furse Eleven', group: 'Group D', coach: 'Coach Eleven' },
+  { name: 'Tafelkop Eleven', group: 'Group D', coach: 'Coach Tafelkop' },
+  { name: 'Manganeng All Stars', group: 'Group D', coach: 'Coach All Stars' },
+]
+
 export default function Home() {
-  const openingMatch = {
-    id: 'm1',
-    home: 'Stars of Mmabatho',
-    away: 'Makola FC',
-    date: 'Dec 19, 2026 • 14:00',
-  }
+  const [showTeamsModal, setShowTeamsModal] = useState(false)
+  const [selectedGroupFilter, setSelectedGroupFilter] = useState('ALL')
+
+  const filteredTeams = selectedGroupFilter === 'ALL' 
+    ? ALL_16_TEAMS 
+    : ALL_16_TEAMS.filter(t => t.group === selectedGroupFilter)
 
   return (
     <main className="min-h-screen bg-[#050505] text-slate-100 font-sans selection:bg-[#c5a059] selection:text-black">
-      {/* Top Header */}
+      {/* Top Navbar */}
       <header className="sticky top-0 z-50 backdrop-blur-xl bg-[#050505]/80 border-b border-[#c5a059]/20 px-6 py-4">
         <div className="max-w-6xl mx-auto flex justify-between items-center">
           <div className="flex items-center gap-3">
@@ -22,16 +43,24 @@ export default function Home() {
               <p className="text-xs text-[#c5a059] tracking-wider uppercase font-semibold">Keeper Of The Nation</p>
             </div>
           </div>
-          <a
-            href="/tickets"
-            className="bg-[#c5a059] hover:bg-[#b08943] text-black font-extrabold text-xs px-4 py-2 rounded-xl transition shadow-lg shadow-[#c5a059]/20"
-          >
-            Get VIP Pass 🎟️
-          </a>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setShowTeamsModal(true)}
+              className="text-xs font-bold text-slate-300 hover:text-white border border-zinc-800 px-3.5 py-2 rounded-xl transition"
+            >
+              16 Teams
+            </button>
+            <a
+              href="/tickets"
+              className="bg-[#c5a059] hover:bg-[#b08943] text-black font-extrabold text-xs px-4 py-2 rounded-xl transition shadow-lg shadow-[#c5a059]/20"
+            >
+              VIP Pass 🎟️
+            </a>
+          </div>
         </div>
       </header>
 
-      {/* Hero Section */}
+      {/* Hero Header */}
       <section className="max-w-6xl mx-auto px-6 py-16 text-center">
         <span className="inline-block px-4 py-1.5 rounded-full bg-zinc-900 border border-zinc-800 text-slate-300 text-xs font-mono mb-6">
           📍 Manganeng Mampuru Sport Ground • Dec 19–29, 2026
@@ -43,35 +72,94 @@ export default function Home() {
           16 elite teams battling for ultimate glory. Track live scores, group standings, squad stats, and claim digital VIP spectator passes.
         </p>
         <div className="flex flex-wrap justify-center gap-4">
-          <a href="#standings" className="bg-[#c5a059] hover:bg-[#b08943] text-black font-bold px-8 py-3.5 rounded-xl transition shadow-lg shadow-[#c5a059]/10 text-sm">
-            View Live Standings
-          </a>
-          <a href="/tickets" className="bg-zinc-900 hover:bg-zinc-800 text-slate-200 border border-zinc-700 font-bold px-8 py-3.5 rounded-xl transition text-sm">
-            Generate VIP Ticket
+          <button
+            onClick={() => setShowTeamsModal(true)}
+            className="bg-[#c5a059] hover:bg-[#b08943] text-black font-bold px-8 py-3.5 rounded-xl transition shadow-lg shadow-[#c5a059]/10 text-sm"
+          >
+            Explore 16 Teams
+          </button>
+          <a
+            href="/tickets"
+            className="bg-zinc-900 hover:bg-zinc-800 text-slate-200 border border-zinc-700 font-bold px-8 py-3.5 rounded-xl transition text-sm"
+          >
+            Issue VIP Pass
           </a>
         </div>
       </section>
 
-      {/* Community Predictor & Opening Match Section */}
-      <section className="max-w-6xl mx-auto px-6 py-12 border-t border-zinc-900">
+      {/* Match Predictor Section */}
+      <section className="max-w-6xl mx-auto px-6 py-10 border-t border-zinc-900">
         <div className="max-w-xl mx-auto">
           <MatchPredictor
-            matchId={openingMatch.id}
-            homeTeam={openingMatch.home}
-            awayTeam={openingMatch.away}
-            date={openingMatch.date}
+            matchId="m1"
+            homeTeam="Stars of Mmabatho"
+            awayTeam="Makola FC"
+            date="Dec 19, 2026 • 14:00"
           />
         </div>
       </section>
 
-      {/* Standings Table Section */}
+      {/* Standings Table */}
       <section id="standings" className="max-w-6xl mx-auto px-6 py-12 border-t border-zinc-900">
-        <div className="mb-8">
-          <h3 className="text-2xl font-bold text-white">Tournament Standings</h3>
-          <p className="text-slate-400 text-sm">Official Group Stage Points & Goal Differences</p>
+        <div className="mb-6">
+          <h3 className="text-2xl font-bold text-white">Live Group Standings</h3>
+          <p className="text-slate-400 text-sm">Calculated dynamically based on real match outcomes</p>
         </div>
         <StandingsTable />
       </section>
+
+      {/* 16 Teams Modal */}
+      {showTeamsModal && (
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+          <div className="bg-[#121212] border border-zinc-800 rounded-3xl max-w-3xl w-full p-6 md:p-8 max-h-[85vh] overflow-y-auto">
+            <div className="flex justify-between items-center mb-6">
+              <div>
+                <h3 className="text-2xl font-black text-white">Tournament Roster</h3>
+                <p className="text-xs text-[#c5a059] font-mono">16 Participating Clubs</p>
+              </div>
+              <button
+                onClick={() => setShowTeamsModal(false)}
+                className="text-slate-400 hover:text-white bg-zinc-900 border border-zinc-800 w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Group Filter Buttons */}
+            <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
+              {['ALL', 'Group A', 'Group B', 'Group C', 'Group D'].map((group) => (
+                <button
+                  key={group}
+                  onClick={() => setSelectedGroupFilter(group)}
+                  className={`px-4 py-2 rounded-xl text-xs font-bold font-mono transition border ${
+                    selectedGroupFilter === group
+                      ? 'bg-[#c5a059] text-black border-[#c5a059]'
+                      : 'bg-zinc-900 text-slate-400 border-zinc-800 hover:border-zinc-700'
+                  }`}
+                >
+                  {group}
+                </button>
+              ))}
+            </div>
+
+            {/* Team Cards Grid */}
+            <div className="grid sm:grid-cols-2 gap-4">
+              {filteredTeams.map((team, i) => (
+                <div key={i} className="p-4 rounded-2xl bg-zinc-900/90 border border-zinc-800 hover:border-[#c5a059]/40 transition">
+                  <div className="flex justify-between items-start mb-2">
+                    <span className="text-lg">🛡️</span>
+                    <span className="text-[10px] font-mono bg-zinc-800 text-[#c5a059] px-2 py-0.5 rounded border border-zinc-700">
+                      {team.group}
+                    </span>
+                  </div>
+                  <h4 className="font-bold text-white text-base">{team.name}</h4>
+                  <p className="text-xs text-slate-500 font-mono mt-1">{team.coach}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Footer */}
       <footer className="border-t border-zinc-900 py-8 px-6 text-center text-xs text-slate-500 font-mono">
