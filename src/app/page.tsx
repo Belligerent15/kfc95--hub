@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import StandingsTable from '@/components/StandingsTable'
 import MatchPredictor from '@/components/MatchPredictor'
 
@@ -71,18 +71,51 @@ export default function Home() {
         <p className="text-slate-400 max-w-2xl mx-auto text-base md:text-lg mb-8 leading-relaxed">
           16 elite teams battling for ultimate glory. Track live scores, group standings, squad stats, and claim digital VIP spectator passes.
         </p>
-        <div className="flex flex-wrap justify-center gap-4">
+      </section>
+
+      {/* Interactive Feature Cards Section */}
+      <section className="max-w-6xl mx-auto px-6 py-8">
+        <div className="grid md:grid-cols-3 gap-6">
+          {/* Card 1: 16 Teams (Clicks to open modal) */}
           <button
             onClick={() => setShowTeamsModal(true)}
-            className="bg-[#c5a059] hover:bg-[#b08943] text-black font-bold px-8 py-3.5 rounded-xl transition shadow-lg shadow-[#c5a059]/10 text-sm"
+            className="text-left p-6 rounded-2xl bg-[#121212] border border-zinc-800 hover:border-[#c5a059]/60 transition group cursor-pointer shadow-xl"
           >
-            Explore 16 Teams
+            <div className="text-3xl mb-3 group-hover:scale-110 transition transform">🏆</div>
+            <h4 className="text-lg font-bold text-white mb-1 flex items-center justify-between">
+              16 Teams <span className="text-xs text-[#c5a059] font-mono">View All →</span>
+            </h4>
+            <p className="text-slate-400 text-xs leading-relaxed">
+              Click to view all squads, coaches, and club profiles from Stars of Mmabatho to Manganeng Brazil.
+            </p>
           </button>
+
+          {/* Card 2: Live Updates (Clicks to scroll to standings) */}
+          <a
+            href="#standings"
+            className="text-left p-6 rounded-2xl bg-[#121212] border border-zinc-800 hover:border-[#c5a059]/60 transition group cursor-pointer shadow-xl block"
+          >
+            <div className="text-3xl mb-3 group-hover:scale-110 transition transform">⚡</div>
+            <h4 className="text-lg font-bold text-white mb-1 flex items-center justify-between">
+              Live Updates <span className="text-xs text-[#c5a059] font-mono">Standings ↓</span>
+            </h4>
+            <p className="text-slate-400 text-xs leading-relaxed">
+              Real-time match scores, goal alerts, and instant group table standings.
+            </p>
+          </a>
+
+          {/* Card 3: VIP Passes (Clicks to go to /tickets) */}
           <a
             href="/tickets"
-            className="bg-zinc-900 hover:bg-zinc-800 text-slate-200 border border-zinc-700 font-bold px-8 py-3.5 rounded-xl transition text-sm"
+            className="text-left p-6 rounded-2xl bg-[#121212] border border-zinc-800 hover:border-[#c5a059]/60 transition group cursor-pointer shadow-xl block"
           >
-            Issue VIP Pass
+            <div className="text-3xl mb-3 group-hover:scale-110 transition transform">🎟️</div>
+            <h4 className="text-lg font-bold text-white mb-1 flex items-center justify-between">
+              VIP Passes <span className="text-xs text-[#c5a059] font-mono">Get Pass →</span>
+            </h4>
+            <p className="text-slate-400 text-xs leading-relaxed">
+              Generate digital spectator tickets with embedded QR verification codes for gate entry.
+            </p>
           </a>
         </div>
       </section>
