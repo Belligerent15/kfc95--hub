@@ -8,20 +8,53 @@ interface Team {
   groupName: string
 }
 
+const STATIC_32_TEAMS: Team[] = [
+  { id: '1', name: 'Stars of Mmabatho', groupName: 'Group A' },
+  { id: '2', name: 'Makola FC', groupName: 'Group A' },
+  { id: '3', name: 'Votex FC', groupName: 'Group B' },
+  { id: '4', name: 'Maila United', groupName: 'Group B' },
+  { id: '5', name: 'Kwena Academy', groupName: 'Group C' },
+  { id: '6', name: 'Mochadi FC', groupName: 'Group C' },
+  { id: '7', name: 'De Stars FC', groupName: 'Group D' },
+  { id: '8', name: 'Mantwaleng Shakers', groupName: 'Group D' },
+  { id: '9', name: 'Matsebeng Real Hearts', groupName: 'Group E' },
+  { id: '10', name: 'PSG FC', groupName: 'Group E' },
+  { id: '11', name: 'Malegale Circuit', groupName: 'Group F' },
+  { id: '12', name: 'Gosebo FC', groupName: 'Group F' },
+  { id: '13', name: 'The Joint FC', groupName: 'Group G' },
+  { id: '14', name: 'Limpopo Express', groupName: 'Group G' },
+  { id: '15', name: 'Manganeng Barcelona', groupName: 'Group H' },
+  { id: '16', name: 'Ngwabe City Motors', groupName: 'Group H' },
+  { id: '17', name: 'Real Eagles', groupName: 'Group I' },
+  { id: '18', name: 'Team Galatasaray', groupName: 'Group I' },
+  { id: '19', name: 'Platinum City', groupName: 'Group J' },
+  { id: '20', name: 'Shaka United FC', groupName: 'Group J' },
+  { id: '21', name: 'Mmotong SA', groupName: 'Group K' },
+  { id: '22', name: 'Marizeburg FC', groupName: 'Group K' },
+  { id: '23', name: 'Dikakapa FC', groupName: 'Group L' },
+  { id: '24', name: 'Leopard FC', groupName: 'Group L' },
+  { id: '25', name: 'Manyasa FC', groupName: 'Group M' },
+  { id: '26', name: 'Future FC', groupName: 'Group M' },
+  { id: '27', name: 'Moopong FC', groupName: 'Group N' },
+  { id: '28', name: 'Super Strikes FC', groupName: 'Group N' },
+  { id: '29', name: 'Mmakgari Stars', groupName: 'Group O' },
+  { id: '30', name: 'Mabule All Blacks', groupName: 'Group O' },
+  { id: '31', name: 'Manganeng Brazil', groupName: 'Group P' },
+  { id: '32', name: 'Stars of Fetakgomo', groupName: 'Group P' },
+]
+
 export default function AdminPage() {
   const [passkey, setPasskey] = useState('')
   const [isAuthenticated, setIsAuthenticated] = useState(false)
-  const [teams, setTeams] = useState<Team[]>([])
+  const [teams, setTeams] = useState<Team[]>(STATIC_32_TEAMS)
   
-  // Match Score Form State
-  const [homeTeamId, setHomeTeamId] = useState('')
-  const [awayTeamId, setAwayTeamId] = useState('')
+  const [homeTeamId, setHomeTeamId] = useState(STATIC_32_TEAMS[0].id)
+  const [awayTeamId, setAwayTeamId] = useState(STATIC_32_TEAMS[1].id)
   const [homeScore, setHomeScore] = useState(0)
   const [awayScore, setAwayScore] = useState(0)
 
-  // Player Stat Form State
   const [scorerName, setScorerName] = useState('')
-  const [scorerTeamId, setScorerTeamId] = useState('')
+  const [scorerTeamId, setScorerTeamId] = useState(STATIC_32_TEAMS[0].id)
   const [isAssist, setIsAssist] = useState(false)
 
   const [statusMsg, setStatusMsg] = useState('')
@@ -31,16 +64,14 @@ export default function AdminPage() {
     fetch('/api/stats')
       .then((res) => res.json())
       .then((data) => {
-        if (Array.isArray(data)) {
+        if (Array.isArray(data) && data.length > 0) {
           setTeams(data)
-          if (data.length > 0) {
-            setHomeTeamId(data[0].id)
-            setAwayTeamId(data[1]?.id || data[0].id)
-            setScorerTeamId(data[0].id)
-          }
+          setHomeTeamId(data[0].id)
+          setAwayTeamId(data[1]?.id || data[0].id)
+          setScorerTeamId(data[0].id)
         }
       })
-      .catch((err) => console.error(err))
+      .catch((err) => console.error('Using fallback static teams for admin:', err))
   }, [])
 
   const handleLogin = (e: React.FormEvent) => {
@@ -181,7 +212,7 @@ export default function AdminPage() {
               >
                 {teams.map((team) => (
                   <option key={team.id} value={team.id}>
-                    {team.name} ({team.groupName})
+                    {team.name} {team.groupName ? `(${team.groupName})` : ''}
                   </option>
                 ))}
               </select>
@@ -207,7 +238,7 @@ export default function AdminPage() {
               >
                 {teams.map((team) => (
                   <option key={team.id} value={team.id}>
-                    {team.name} ({team.groupName})
+                    {team.name} {team.groupName ? `(${team.groupName})` : ''}
                   </option>
                 ))}
               </select>
