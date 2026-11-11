@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 import StandingsTable from '../components/StandingsTable'
 import MatchPredictor from '../components/MatchPredictor'
 import StatsLeaderboard from '../components/StatsLeaderboard'
+import CommunityHub from '../components/CommunityHub'
 
 const ALL_32_TEAMS = [
   { name: 'Stars of Mmabatho', group: 'Group A' },
@@ -124,7 +125,7 @@ export default function Home() {
             className="text-left p-6 rounded-2xl bg-[#121212] border border-zinc-800 hover:border-[#c5a059]/60 transition group cursor-pointer shadow-xl block"
           >
             <div className="text-3xl mb-3 group-hover:scale-110 transition transform">🎟️</div>
-            <h4 className="text-lg font-bold text-[#ffffff] mb-1 flex items-center justify-between">
+            <h4 className="text-lg font-bold text-white mb-1 flex items-center justify-between">
               VIP Passes <span className="text-xs text-[#c5a059] font-mono">Get Pass →</span>
             </h4>
             <p className="text-slate-400 text-xs leading-relaxed">
@@ -132,6 +133,11 @@ export default function Home() {
             </p>
           </a>
         </div>
+      </section>
+
+      {/* Community Fan Hub & Bulletin Section */}
+      <section className="max-w-6xl mx-auto px-6 py-10 border-t border-zinc-900">
+        <CommunityHub />
       </section>
 
       {/* Stats & Performance Leaderboard Section */}
@@ -177,7 +183,6 @@ export default function Home() {
               </button>
             </div>
 
-            {/* Group Filter Buttons */}
             <div className="flex gap-2 mb-6 overflow-x-auto pb-2">
               {['ALL', 'Group A', 'Group B', 'Group C', 'Group D', 'Group E', 'Group F', 'Group G', 'Group H', 'Group I', 'Group J', 'Group K', 'Group L', 'Group M', 'Group N', 'Group O', 'Group P'].map((group) => (
                 <button
@@ -194,7 +199,6 @@ export default function Home() {
               ))}
             </div>
 
-            {/* Team Cards Grid */}
             <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
               {filteredTeams.map((team, i) => (
                 <div key={i} className="p-4 rounded-2xl bg-zinc-900/90 border border-zinc-800 hover:border-[#c5a059]/40 transition">
