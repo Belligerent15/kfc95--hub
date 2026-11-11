@@ -3,6 +3,17 @@
 import React, { useState } from 'react'
 import { QRCodeSVG } from 'qrcode.react'
 
+const ALL_32_TEAMS = [
+  'Stars of Mmabatho', 'Makola FC', 'Votex FC', 'Maila United',
+  'Kwena Academy', 'Mochadi FC', 'De Stars FC', 'Mantwaleng Shakers',
+  'Matsebeng Real Hearts', 'PSG FC', 'Malegale Circuit', 'Gosebo FC',
+  'The Joint FC', 'Limpopo Express', 'Manganeng Barcelona', 'Ngwabe City Motors',
+  'Real Eagles', 'Team Galatasaray', 'Platinum City', 'Shaka United FC',
+  'Mmotong SA', 'Marizeburg FC', 'Dikakapa FC', 'Leopard FC',
+  'Manyasa FC', 'Future FC', 'Moopong FC', 'Super Strikes FC',
+  'Mmakgari Stars', 'Mabule All Blacks', 'Manganeng Brazil', 'Stars of Fetakgomo'
+]
+
 export default function TicketsPage() {
   const [holderName, setHolderName] = useState('')
   const [selectedTeam, setSelectedTeam] = useState('Stars of Mmabatho')
@@ -79,14 +90,11 @@ export default function TicketsPage() {
                 onChange={(e) => setSelectedTeam(e.target.value)}
                 className="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-[#c5a059]"
               >
-                <option value="Stars of Mmabatho">Stars of Mmabatho</option>
-                <option value="Makola FC">Makola FC</option>
-                <option value="Manganeng Brazil">Manganeng Brazil</option>
-                <option value="Manganeng Barcelona">Manganeng Barcelona</option>
-                <option value="Votex FC">Votex FC</option>
-                <option value="Maila United">Maila United</option>
-                <option value="De Stars FC">De Stars FC</option>
-                <option value="Platinum City">Platinum City</option>
+                {ALL_32_TEAMS.map((team) => (
+                  <option key={team} value={team}>
+                    {team}
+                  </option>
+                ))}
               </select>
             </div>
 
