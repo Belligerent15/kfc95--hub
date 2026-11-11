@@ -1,43 +1,109 @@
-export default function Home() {
+import PrismaClient from '@prisma/client'
+
+async function getMatches() {
+  const dummyMatches = [
+    { id: '1', home: 'Stars of Mmabatho', away: 'Makola FC', date: 'Dec 19, 14:00', venue: 'Ground A', status: 'UPCOMING' },
+    { id: '2', home: 'Votex FC', away: 'Maila United', date: 'Dec 19, 16:00', venue: 'Ground A', status: 'UPCOMING' },
+    { id: '3', home: 'Kwena Academy', away: 'Mochadi FC', date: 'Dec 20, 14:00', venue: 'Ground B', status: 'UPCOMING' },
+    { id: '4', home: 'Manganeng Barcelona', away: 'Ngwabe City Motors', date: 'Dec 20, 16:00', venue: 'Ground A', status: 'UPCOMING' },
+  ]
+  return dummyMatches
+}
+
+export default async function Home() {
+  const matches = await getMatches()
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-6 md:p-24 bg-gradient-to-b from-slate-950 via-zinc-900 to-black text-amber-400">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-amber-500/20 bg-black/80 pb-6 pt-8 backdrop-blur-2xl lg:static lg:w-auto lg:rounded-xl lg:border lg:bg-zinc-900/50 lg:p-4">
-          ⚽ KFC95 Hub &nbsp;<code className="font-bold text-amber-200">Keeper Of The Nation</code>
-        </p>
-      </div>
+    <main className="min-h-screen bg-[#050505] text-slate-100 font-sans selection:bg-[#c5a059] selection:text-black">
+      {/* Header Bar */}
+      <header className="sticky top-0 z-50 backdrop-blur-xl bg-[#050505]/80 border-b border-[#c5a059]/20 px-6 py-4">
+        <div className="max-w-6xl mx-auto flex justify-between items-center">
+          <div className="flex items-center gap-3">
+            <span className="text-2xl">⚽</span>
+            <div>
+              <h1 className="font-bold text-white tracking-wide text-lg">KFC95 HUB</h1>
+              <p className="text-xs text-[#c5a059] tracking-wider uppercase font-semibold">Keeper Of The Nation</p>
+            </div>
+          </div>
+          <span className="text-xs font-mono bg-[#c5a059]/10 text-[#c5a059] border border-[#c5a059]/30 px-3 py-1 rounded-full">
+            OFFICIAL TOURNAMENT
+          </span>
+        </div>
+      </header>
 
-      <div className="flex flex-col items-center justify-center my-12 text-center">
-        <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-white mb-4">
-          7th Annual <span className="text-amber-400">Soccer Tournament</span> 2026
-        </h1>
-        <p className="text-lg md:text-xl text-slate-300 max-w-2xl mb-8">
-          Manganeng Mampuru Sport Ground | December 19–29, 2026. Live standings, fixtures, community tipping, and VIP tickets.
+      {/* Hero Section */}
+      <section className="max-w-6xl mx-auto px-6 py-16 text-center">
+        <span className="inline-block px-4 py-1.5 rounded-full bg-zinc-900 border border-zinc-800 text-slate-300 text-xs font-mono mb-6">
+          📍 Manganeng Mampuru Sport Ground • Dec 19–29, 2026
+        </span>
+        <h2 className="text-4xl md:text-6xl font-black text-white tracking-tight mb-6">
+          7th Annual <span className="text-[#c5a059]">Soccer Tournament</span>
+        </h2>
+        <p className="text-slate-400 max-w-2xl mx-auto text-base md:text-lg mb-8 leading-relaxed">
+          16 elite teams battling for ultimate glory. Track live scores, official group tables, and squad stats in real-time.
         </p>
-        <div className="flex gap-4">
-          <a href="#fixtures" className="bg-amber-500 hover:bg-amber-400 text-black font-bold px-6 py-3 rounded-xl transition shadow-lg shadow-amber-500/20">
-            View Fixtures
+        <div className="flex flex-wrap justify-center gap-4">
+          <a href="#fixtures" className="bg-[#c5a059] hover:bg-[#b08943] text-black font-bold px-8 py-3.5 rounded-xl transition shadow-lg shadow-[#c5a059]/10 text-sm">
+            Explore Fixtures
           </a>
-          <a href="#standings" className="border border-amber-500/40 hover:bg-amber-500/10 text-amber-300 font-bold px-6 py-3 rounded-xl transition">
-            Check Standings
+          <a href="#teams" className="bg-zinc-900 hover:bg-zinc-800 text-slate-200 border border-zinc-700 font-bold px-8 py-3.5 rounded-xl transition text-sm">
+            View 16 Teams
           </a>
         </div>
-      </div>
+      </section>
 
-      <div className="grid text-center lg:max-w-5xl lg:w-full lg:grid-cols-3 lg:text-left gap-6 mt-8">
-        <div className="p-6 rounded-2xl bg-zinc-900/80 border border-amber-500/20">
-          <h2 className="text-2xl font-bold text-white mb-2">16 Teams</h2>
-          <p className="text-slate-400 text-sm">Full squad rosters, player stats, and club profiles from Stars of Mmabatho to Manganeng Brazil.</p>
+      {/* Fixtures Feed */}
+      <section id="fixtures" className="max-w-6xl mx-auto px-6 py-12 border-t border-zinc-900">
+        <div className="flex justify-between items-end mb-8">
+          <div>
+            <h3 className="text-2xl font-bold text-white">Opening Matchups</h3>
+            <p className="text-slate-400 text-sm">Official Group Stage Fixtures</p>
+          </div>
         </div>
-        <div className="p-6 rounded-2xl bg-zinc-900/80 border border-amber-500/20">
-          <h2 className="text-2xl font-bold text-white mb-2">Live Scores</h2>
-          <p className="text-slate-400 text-sm">Real-time match simulation ticker, goal updates, and group stage points tables.</p>
+
+        <div className="grid md:grid-cols-2 gap-4">
+          {matches.map((match) => (
+            <div key={match.id} className="p-5 rounded-2xl bg-[#121212] border border-zinc-800 hover:border-[#c5a059]/40 transition">
+              <div className="flex justify-between text-xs text-slate-400 mb-3 font-mono">
+                <span>{match.venue}</span>
+                <span className="text-[#c5a059]">{match.date}</span>
+              </div>
+              <div className="flex justify-between items-center py-2">
+                <span className="font-bold text-white text-base">{match.home}</span>
+                <span className="px-3 py-1 bg-zinc-900 border border-zinc-800 text-xs text-slate-300 rounded font-mono">VS</span>
+                <span className="font-bold text-white text-base">{match.away}</span>
+              </div>
+            </div>
+          ))}
         </div>
-        <div className="p-6 rounded-2xl bg-zinc-900/80 border border-amber-500/20">
-          <h2 className="text-2xl font-bold text-white mb-2">VIP Tickets</h2>
-          <p className="text-slate-400 text-sm">Instant digital passes with unique QR codes for community supporters and VIPs.</p>
+      </section>
+
+      {/* Stats Summary Cards */}
+      <section id="teams" className="max-w-6xl mx-auto px-6 py-12 border-t border-zinc-900">
+        <div className="grid md:grid-cols-3 gap-6">
+          <div className="p-6 rounded-2xl bg-[#121212] border border-zinc-800">
+            <div className="text-3xl mb-3">🏆</div>
+            <h4 className="text-lg font-bold text-white mb-1">16 Teams</h4>
+            <p className="text-slate-400 text-xs leading-relaxed">
+              Featuring Stars of Mmabatho, Makola FC, Votex FC, Manganeng Brazil, and more.
+            </p>
+          </div>
+          <div className="p-6 rounded-2xl bg-[#121212] border border-zinc-800">
+            <div className="text-3xl mb-3">⚡</div>
+            <h4 className="text-lg font-bold text-white mb-1">Live Updates</h4>
+            <p className="text-slate-400 text-xs leading-relaxed">
+              Real-time match scores, goal alerts, and instant group table standings.
+            </p>
+          </div>
+          <div className="p-6 rounded-2xl bg-[#121212] border border-zinc-800">
+            <div className="text-3xl mb-3">🎟️</div>
+            <h4 className="text-lg font-bold text-white mb-1">VIP Passes</h4>
+            <p className="text-slate-400 text-xs leading-relaxed">
+              Digital spectator tickets with embedded verification codes for gate entry.
+            </p>
+          </div>
         </div>
-      </div>
+      </section>
     </main>
   )
 }
