@@ -3,6 +3,7 @@
 import React, { useState } from 'react'
 import StandingsTable from '../components/StandingsTable'
 import MatchPredictor from '../components/MatchPredictor'
+import StatsLeaderboard from '../components/StatsLeaderboard'
 
 const ALL_32_TEAMS = [
   { name: 'Stars of Mmabatho', group: 'Group A' },
@@ -85,7 +86,7 @@ export default function Home() {
           7th Annual <span className="text-[#c5a059]">Soccer Tournament</span>
         </h2>
         <p className="text-slate-400 max-w-2xl mx-auto text-base md:text-lg mb-8 leading-relaxed">
-          32 elite teams battling for ultimate glory. Track live scores, official group standings, fixtures, and claim digital VIP spectator passes.
+          32 elite teams battling for ultimate glory. Track live scores, official group standings, squad stats, and claim digital VIP spectator passes.
         </p>
       </section>
 
@@ -123,7 +124,7 @@ export default function Home() {
             className="text-left p-6 rounded-2xl bg-[#121212] border border-zinc-800 hover:border-[#c5a059]/60 transition group cursor-pointer shadow-xl block"
           >
             <div className="text-3xl mb-3 group-hover:scale-110 transition transform">🎟️</div>
-            <h4 className="text-lg font-bold text-white mb-1 flex items-center justify-between">
+            <h4 className="text-lg font-bold text-[#ffffff] mb-1 flex items-center justify-between">
               VIP Passes <span className="text-xs text-[#c5a059] font-mono">Get Pass →</span>
             </h4>
             <p className="text-slate-400 text-xs leading-relaxed">
@@ -131,6 +132,11 @@ export default function Home() {
             </p>
           </a>
         </div>
+      </section>
+
+      {/* Stats & Performance Leaderboard Section */}
+      <section className="max-w-6xl mx-auto px-6 py-10 border-t border-zinc-900">
+        <StatsLeaderboard />
       </section>
 
       {/* Match Predictor Section */}

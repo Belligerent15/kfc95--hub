@@ -1,46 +1,47 @@
-datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
-}
-
 generator client {
   provider = "prisma-client-js"
 }
 
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
 model Team {
-    id           String   @id @default(uuid())
-    name         String   @unique
-    groupName    String
-    played       Int      @default(0)
-    won          Int      @default(0)
-    drawn        Int      @default(0)
-    lost         Int      @default(0)
-    goalsFor     Int      @default(0)
-    goalsAgainst Int      @default(0)
-    points       Int      @default(0)
-    players      Player[]
-    homeMatches  Match[]  @relation("HomeTeam")
-    awayMatches  Match[]  @relation("AwayTeam")
+  id           String   @id @default(cuid())
+  name         String   @unique
+  groupName    String
+  logoUrl      String?
+  played       Int      @default(0)
+  won          Int      @default(0)
+  drawn        Int      @default(0)
+  lost         Int      @default(0)
+  goalsFor     Int      @default(0)
+  goalsAgainst Int      @default(0)
+  points       Int      @default(0)
+  players      Player[]
+  homeMatches  Match[]  @relation("HomeTeam")
+  awayMatches  Match[]  @relation("AwayTeam")
 }
 
 model Player {
-    id       String @id @default(uuid())
-    name     String
-    position String
-    number   Int
-    teamId   String
-    team     Team   @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  id       String @id @default(cuid())
+  name     String
+  position String @default("Forward")
+  goals    Int    @default(0)
+  assists  Int    @default(0)
+  teamId   String
+  team     Team   @relation(fields: [teamId], references: [id])
 }
 
 model Match {
-    id          String   @id @default(uuid())
-    homeTeamId  String
-    homeTeam    Team     @relation("HomeTeam", fields: [homeTeamId], references: [id])
-    awayTeamId  String
-    awayTeam    Team     @relation("AwayTeam", fields: [awayTeamId], references: [id])
-    homeScore   Int      @default(0)
-    awayScore   Int      @default(0)
-    status      String   @default("UPCOMING")
-    matchDate   String   @default("19-29 December 2026")
-    venue       String   @default("Manganeng Mampuru Sport Ground")
+  id         String   @id @default(cuid())
+  date       DateTime
+  homeTeamId String
+  awayTeamId String
+  homeScore  Int      @default(0)
+  awayScore  Int      @default(0)
+  status     String   @default("UPCOMING")
+  homeTeam   Team     @relation("HomeTeam", fields: [homeTeamId], references: [id])
+  awayTeam   Team     @relation("AwayTeam", fields: [awayTeamId], references: [id])
 }
